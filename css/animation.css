@@ -105,3 +105,17 @@
     }
   }
   
+  .scrolled{
+    -webkit-animation: scrolled 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) forwards;
+	        animation: scrolled 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) forwards;
+  }
+
+  @keyframes scrolled {
+    to {
+      -webkit-transform: translate(210px, 671px);
+              transform: translate(210px, 671px);
+              width: 25em;
+    }
+  }
+
+  

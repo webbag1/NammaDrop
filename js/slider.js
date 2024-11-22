@@ -1,6 +1,8 @@
 let slideIndex = 1;
 showSlides(slideIndex);
 
+setInterval(() => plusSlides(1), 3000);
+
 function plusSlides(n) {
   showSlides(slideIndex += n);
 }

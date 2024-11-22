@@ -1,0 +1,54 @@
+.floaters{
+    width: 5em;
+    aspect-ratio: 1/1;
+    background: linear-gradient( #9b05ff7b, #00f7ff7d);
+    border-radius: .5em;
+    position: absolute;
+    z-index: -2;
+    top: 0;
+}
+
+
+.floaters:nth-child(3){
+    transform: translate(42em, 13em);
+}
+.floaters:nth-child(4){
+    transform: translate(44em, 9em);
+}
+.floaters:nth-child(5){
+    transform: translate(-42em, 33em);
+}
+.floaters:nth-child(6){
+    transform: translate(-42em, 55em);
+}
+.floaters:nth-child(7){
+    transform: translate(42em, 77em);
+}
+.floaters:nth-child(8){
+    transform: translate(-43em, 100em);
+}
+.floaters:nth-child(9){
+    transform: translate(-40em, 105em);
+}
+.floaters:nth-child(10){
+    transform: translate(-42em, 110em);
+}
+.floaters:nth-child(11){
+    transform: translate(42em, 151em);
+}
+.floaters:nth-child(12){
+    transform: translate(-42em, 169em);
+}
+.floaters:nth-child(13){
+    transform: translate(-44em, 165em);
+}
+.floaters:nth-child(14){
+    transform: translate(40em, 155em);
+}
+.floaters:nth-child(15){
+    transform: translate(42em, 120em);
+}
+.floaters:nth-child(16){
+    transform: translate(43em, 41em);
+}
+

@@ -53,18 +53,43 @@ header{
     background: transparent;
     color: #fff;
 }
+.optionList{
+    gap: 1em;
+}
+.optionList a{
+    background: transparent;
+    color: #000;
+    font-weight: 700;
+    position: relative;
+}
+.option::after{
+    content: "";
+    position: absolute;
+    bottom: -0.3em;
+    left: 0;
+    height: 0.2em;
+    width: 0%;
+    background: var(--gradent);
+    transition: width .2s ease-in-out;
+    
+}
+.option:hover::after{
+    width: 100%;
+}
 
 /* hero start */
 .gradi{
     position: absolute;
     width: clamp(18em, 85%, 95em);
-    height: calc(36.8em + (100vh * 2));
+    height: calc(36.8em + (100vh * 3));
     background: var(--gradent);
     top: 5em;
     border-radius: 3em;
     padding: 0.5em 1.2em;
     z-index: -1;
+    box-shadow: 0px 3px 11px 0px #08208a;
 }
+
 
 .hero{
     width: clamp(18em, 85%, 95em);
@@ -176,15 +201,98 @@ img {
 .section3{
   height: 100vh;
   width: clamp(18em, 85%, 95em);
+  flex-direction: column;
   /* background-color: black; */
+  gap: 5em;
+}
+.sec3heading{
+    font-size: 3em;
+    font-weight: 700;
+    color: #fff;
 }
 
+.features-section{
+    position: relative;
+    /* background-color: #00F6FF; */
+    width: 80%;
+    height: 53%;
+    align-items: flex-end;
+    margin-bottom: 5em;
+}
+.feature{
+    position: absolute;
+    width: 17em;
+    color: #fff;
+    padding: 1em;
+    backdrop-filter: blur(11px) saturate(200%);
+    -webkit-backdrop-filter: blur(11px) saturate(200%);
+    background-color: #1119288a;
+    border-radius: 12px;
+    border: 1px solid #ffffff20;
+}
+.feaHead{
+    font-size: 1.5em;
+    font-weight: 700;
+}
+.product{
+    border: 0.2em dashed #1119288a;
+    border-radius: 10em;
+}
+.product img{
+    width: 15em;
+}
+.feature1{
+    bottom: 0;
+    left: 0;
+    /* transform: skew(359deg, 11deg); */
+}
+.feature2{
+    top: 0;
+    left: 20%;
+}
+.feature3{
+    top: 0;
+    right: 20%;
+}
+.feature4{
+    bottom: 0;
+    right: 0;
+    /* transform: skew(11deg, 359deg); */
+}
+
+/* section 4 */
+.section4{
+    height: 100vh;
+    width: clamp(18em, 85%, 95em);
+}
+.sec4right{
+    width: 40%;
+}
+.sec4head{
+    color: #fff;
+    font-size: 3em;
+    font-weight: 900;
+}
+.sec4left ul li{
+    width: 20em;
+    margin: 1em 0;
+    color: #fff;
+}
+.lihead{
+    font-size: 2em;
+    font-weight: 700;
+    color: #fff;
+}
+.lisub{
+    color: #ffffff91;
+}
 /* footer */
 footer{
     width: clamp(18em, 95%, 95em);
     justify-content: space-between !important;
 }
-.footer-logo img{
+
+.footer-logo svg{
     width: 15em;
 }
 
