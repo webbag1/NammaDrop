@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="./css/Building_Registration.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="logo">LOGO</div>
+        
+        <div class="progress-bar">
+            <div class="progress-step active">1</div>
+            <div class="progress-step">2</div>
+            <div class="progress-step">3</div>
+            <div class="progress-step">4</div>
+            <div class="progress-step">5</div>
+        </div>
+
+        <form id="buildingRegistrationForm">
+            <!-- Step 1: Building Details -->
+            <div class="form-step active" data-step="1">
+                <h2>Building Details</h2>
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="buildingName">Building Name</label>
+                        <input type="text" id="buildingName" required>
+                        <div class="error-message">Please enter the building name</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" required>
+                        <div class="error-message">Please enter the address</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="floors">Number of Floors</label>
+                            <input type="number" id="floors" required>
+                            <div class="error-message">Please enter the number of floors</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="buildingType">Type of Building</label>
+                            <select id="buildingType" required>
+                                <option value="">Select type</option>
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="mixed">Mixed-use</option>
+                            </select>
+                            <div class="error-message">Please select a building type</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="constructionYear">Construction Year</label>
+                        <input type="number" id="constructionYear" required>
+                        <div class="error-message">Please enter the construction year</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Water Infrastructure -->
+            <div class="form-step" data-step="2">
+                <h2>Water Infrastructure Details</h2>
+                <div class="form-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="undergroundTanks">Underground Tanks</label>
+                            <input type="number" id="undergroundTanks" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="overheadTanks">Overhead Tanks</label>
+                            <input type="number" id="overheadTanks" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="apartmentTanks">Individual Apartment Tanks</label>
+                            <input type="number" id="apartmentTanks" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tankCapacity">Tank Capacity (liters)</label>
+                            <input type="number" id="tankCapacity" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="waterSource">Water Supply Source</label>
+                        <select id="waterSource" required>
+                            <option value="">Select source</option>
+                            <option value="municipal">Municipal</option>
+                            <option value="borewell">Borewell</option>
+                            <option value="both">Both</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Resident Information -->
+            <div class="form-step" data-step="3">
+                <h2>Resident Information</h2>
+                <div class="form-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="totalUnits">Total Number of Units</label>
+                            <input type="number" id="totalUnits" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="avgResidents">Average Residents per Unit</label>
+                            <input type="number" id="avgResidents" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Common Areas Requiring Water</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="garden"> Garden</label>
+                            <label><input type="checkbox" value="gym"> Gym</label>
+                            <label><input type="checkbox" value="pool"> Swimming Pool</label>
+                            <label><input type="checkbox" value="other"> Others</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Monitoring Preferences -->
+            <div class="form-step" data-step="4">
+                <h2>Usage & Leakage Monitoring Preferences</h2>
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="monitoringFreq">Monitoring Frequency</label>
+                        <select id="monitoringFreq" required>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Alert Settings</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="usage"> Excessive Usage</label>
+                            <label><input type="checkbox" value="leakage"> Potential Leakages</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notification Method</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="email"> Email</label>
+                            <label><input type="checkbox" value="sms"> SMS</label>
+                            <label><input type="checkbox" value="app"> App Notifications</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Review -->
+            <div class="form-step" data-step="5">
+                <h2>Review and Confirm</h2>
+                <div id="summary" class="summary">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+                <button type="button" id="nextBtn" onclick="nextStep()">Next</button>
+            </div>
+        </form>
+    </div>
+<script src="./js/Building_registration.js"></script>
+    </body>
+    </html>

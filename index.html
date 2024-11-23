@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/floaters.css">
-    <link rel="stylesheet" href="./css/animation.css">
+    <!-- <link rel="stylesheet" href="./css/animation.css"> -->
     <script src="https://kit.fontawesome.com/b7514a30f9.js" crossorigin="anonymous"></script>
     <title>NammaDrop</title>
 </head>
@@ -139,13 +139,24 @@
             y="278.67459">DROP</tspan></text></g>
       </svg>
       <div class="optionList cen">
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="option">PageA</a>
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="option">PageB</a>
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="option">PageC</a>
+        <a href="#insight" class="option">Insight</a>
+        <a href="#feature" class="option">Feature</a>
+        <a href="#uses" class="option">Uses</a>
       </div>
       <div class="btnCont cen">
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="logback"><button class="log">Login</button></a>
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="signback"><button class="sign">SignUP</button></a>
+        <a href="./Building_registration.html"  class="logback"><button class="log">Login</button></a>
+        <a href="./Building_registration.html" class="signback"><button class="sign">SignUP</button></a>
+      </div>
+      <div class="mobileHeader">
+        <i class="fa-solid fa-bars" onclick="mobHeaderOpen()"></i>
+        <i class="fa-solid fa-xmark" onclick="mobHeaderClose()"></i>
+        <div class="mobOptionList">
+          <a href="#insight" class="optionmob">Insight</a>
+          <a href="#feature" class="optionmob">Feature</a>
+          <a href="#uses" class="optionmob">Uses</a>
+          <a href="./Building_registration.html" class="logback"><button class="log">Login</button></a>
+          <a href="./Building_registration.html" class="signback"><button class="sign">SignUP</button></a>
+        </div>
       </div>
     </header>
     <div class="gradi scale-down-bottom"></div>
@@ -161,14 +172,14 @@
         <div class="heroSubHeading">Introducing an innovative water management system that leverages
           sensor technology to optimize water usage and promote sustainability in
           urban homes.</div>
-        <a href="http://" target="_blank" rel="noopener noreferrer" class="signback2"><button class="sign2">SignUP</button></a>
+        <a href="./Building_registration.html" class="signback2"><button class="sign2">SignUP</button></a>
       </div>
       <div class="right slide-in-bottom">
         <img src="./assets/image.png" alt="imageWithWater" class="img1st">
       </div>
     </div>
     <!-- section 2 -->
-    <div class="section2 cen">
+    <div class="section2 cen" id="insight">
       <div class="section2HeadLine">Insight</div>
       <div class="slideshow-container">
 
@@ -198,7 +209,7 @@
         </div>
     </div>
     <!-- section 3 -->
-    <div class="section3 cen">
+    <div class="section3 cen" id="feature">
       <div class="sec3heading">Feature</div>
       <div class="features-section cen">
         <div class="product">
@@ -225,7 +236,7 @@
 
     <!-- section 4 -->
      
-    <div class="section4 cen" id="section4">
+    <div class="section4 cen" id="section4 uses">
       <div class="sec4left">
         <div class="sec4head">Uses of Using</div>
         <ul>

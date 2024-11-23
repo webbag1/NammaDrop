@@ -8,6 +8,9 @@
 :root{
     --gradent: linear-gradient(to right, #9B05FF, #00F6FF);
 }
+html{
+    scroll-behavior: smooth;
+}
 body{
     flex-direction: column;
 }
@@ -332,4 +335,45 @@ footer{
     font-weight: 700;
     padding: 0.7em 2.7em;
     border-radius: 0.5em;
+}
+.mobileHeader{
+    display: none;
+}
+.fa-xmark{
+    display: none;
+}
+@media (max-width: 540px){
+    .optionList, .btnCont, .fa-xmark{
+        display: none;
+    }
+    .mobileHeader{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2em;
+        position: relative;
+    }
+    .mobOptionList{
+        position: absolute;
+        flex-direction: column;
+        gap: 1em;
+        display: none;
+        align-items: center;
+        justify-content: start;
+        top: 1.5em;
+        right: -1em;
+        /* left: 1em; */
+        background: #fff;
+        height: 100vh;
+        width: 10em;
+    }
+    .optionmob{
+        color: #000;
+    }
+    .signback{
+        width: 5.5em;
+    }
+    .logback{
+        width: 4.7em;
+    }
 }

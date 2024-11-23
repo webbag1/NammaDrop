@@ -11,3 +11,16 @@ window.addEventListener('scroll', function() {
     image.classList.remove('scrolled'); // Reset if not in view
   }
 });
+const bars = document.querySelector('.fa-bars');
+const xmark = document.querySelector('.fa-xmark');
+const listt = document.querySelector('.mobOptionList');
+function mobHeaderOpen() {
+  bars.style.display = 'none';
+  xmark.style.display = 'flex';
+  listt.style.display = 'flex';
+}
+function mobHeaderClose() {
+  bars.style.display = 'flex';
+  xmark.style.display = 'none';
+  listt.style.display = 'none';
+}
