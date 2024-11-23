@@ -23,13 +23,16 @@ body {
     padding: 40px;
     position: relative;
 }
-
+.logo svg{
+    height: 5em;
+    width: 5em;
+}
 .logo {
     position: absolute;
     top: 40px;
     right: 40px;
-    width: 150px;
-    height: 60px;
+    width: 5em;
+    height: 5em;
     background: #f0f0f0;
     display: flex;
     align-items: center;

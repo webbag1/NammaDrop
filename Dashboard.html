@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Water Usage Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --secondary: #0ea5e9;
+            --accent: #06b6d4;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+        }
+
+        .dashboard {
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding: 0.5rem 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .water-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .water-drop {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(8deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .stat-trend {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .trend-up {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .trend-down {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .chart-container {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .usage-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .metric-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .progress-container {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .progress-stats {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .recommendations {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin-top: 2rem;
+        }
+
+        .recommendations-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-item:hover {
+            transform: translateX(8px);
+            background: #bfdbfe;
+        }
+
+        .recommendation-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--card);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .recommendation-content {
+            flex: 1;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .recommendation-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .floating-alert {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateY(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            border-left: 4px solid var(--warning);
+        }
+
+        .floating-alert.show {
+            transform: translateY(0);
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-message {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .dashboard {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 1.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <div class="gradient-border"></div>
+            <div class="header">
+                <h1>
+                    <div class="water-icon">
+                        <div class="water-drop"></div>
+                    </div>
+                    Smart Water Usage
+                </h1>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">💧</div>
+                        <div class="stat-title">Today's Usage</div>
+                    </div>
+                    <div class="stat-value" id="today-usage">0L</div>
+                    <div class="stat-trend" id="today-trend">Loading...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-title">Weekly Average</div>
+                    </div>
+                    <div class="stat-value" id="weekly-avg">0L</div>
+                    <div class="stat-trend" id="weekly-trend">Loading...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-title">Efficiency Score</div>
+                    </div>
+                    <div class="stat-value" id="efficiency-score">0%</div>
+                    <div class="stat-trend" id="efficiency-trend">Loading...</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">Weekly Usage Pattern</div>
+                </div>
+                <canvas id="usage-chart"></canvas>
+            </div>
+
+            <div class="usage-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">Peak Usage Time</div>
+                    <div class="metric-value" id="peak-time">8:00 AM</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Water Saved</div>
+                    <div class="metric-value" id="water-saved">0L</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Conservation Goal</div>
+                    <div class="metric-value" id="conservation-goal">95%</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <div class="progress-title">Daily Goal Progress</div>
+                    <div class="progress-stats" id="progress-stats">0/250L</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="goal-progress"></div>
+                </div>
+            </div>
+
+            <div class="recommendations">
+                <div class="recommendations-header">
+                    <h3>Smart Recommendations</h3>
+                </div>
+                <div id="recommendations-list">
+                    <!-- Recommendations will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-alert" id="usage-alert">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+            <div class="alert-title">Usage Alert</div>
+            <div class="alert-message">Usage spike detected! Check for possible leaks.</div>
+        </div>
+    </div>
+
+    [Previous HTML and CSS code remains the same until the script section]
+
+    <script>
+        let chart;
+        const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const STANDARD_DAILY_USAGE = 250;
+        const RECOMMENDATIONS_DATA = [
+            {
+                icon: '💡',
+                title: 'Energy-Efficient Appliances',
+                text: 'Switch to water-efficient appliances to reduce consumption by up to 30%'
+            },
+            {
+                icon: '🚰',
+                title: 'Fix Leaking Faucets',
+                text: 'Regular maintenance can save up to 20L of water per day'
+            },
+            {
+                icon: '🌿',
+                title: 'Smart Garden Watering',
+                text: 'Water plants during early morning or evening to minimize evaporation'
+            },
+            {
+                icon: '🚿',
+                title: 'Optimize Shower Time',
+                text: 'Reducing shower time by 2 minutes can save up to 15L per shower'
+            }
+        ];
+
+        function initializeChart() {
+            const ctx = document.getElementById('usage-chart').getContext('2d');
+            const standardUsageData = DAYS.map(() => STANDARD_DAILY_USAGE);
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: DAYS,
+                    datasets: [
+                        {
+                            label: 'Standard Usage',
+                            data: standardUsageData,
+                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            backgroundColor: gradient,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Actual Usage',
+                            data: new Array(7).fill(0),
+                            borderColor: 'rgba(6, 182, 212, 1)',
+                            backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#0f172a',
+                            bodyColor: '#0f172a',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toFixed(1)}L`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Water Usage (Liters)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        function getPeakUsageTime(data) {
+            const hours = ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM'];
+            return hours[Math.floor(Math.random() * hours.length)];
+        }
+
+        function updateDashboard(actualUsageData) {
+            // Update chart with animation
+            chart.data.datasets[1].data = actualUsageData;
+            chart.update('active');
+
+            // Calculate statistics
+            const totalActualUsage = actualUsageData.reduce((a, b) => a + b, 0);
+            const avgUsage = totalActualUsage / 7;
+            const efficiency = ((STANDARD_DAILY_USAGE * 7 - totalActualUsage) / (STANDARD_DAILY_USAGE * 7) * 100);
+            const waterSaved = Math.max(0, (STANDARD_DAILY_USAGE * 7 - totalActualUsage)).toFixed(1);
+
+            // Animate statistics
+            animateValue('today-usage', actualUsageData[6], 1000, 'L');
+            animateValue('weekly-avg', avgUsage, 1000, 'L');
+            animateValue('efficiency-score', efficiency, 1000, '%');
+            animateValue('water-saved', parseFloat(waterSaved), 1000, 'L');
+
+            // Update trends
+            updateTrends(actualUsageData);
+
+            // Update progress bar
+            updateProgress(actualUsageData[6]);
+
+            // Update peak time
+            document.getElementById('peak-time').textContent = getPeakUsageTime(actualUsageData);
+
+            // Check for alerts
+            checkAlerts(actualUsageData);
+
+            // Update recommendations
+            updateRecommendations(efficiency);
+        }
+
+        function animateValue(elementId, endValue, duration, suffix = '') {
+            const element = document.getElementById(elementId);
+            const startValue = parseFloat(element.textContent) || 0;
+            const range = endValue - startValue;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const value = startValue + (range * progress);
+                element.textContent = `${value.toFixed(1)}${suffix}`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function updateTrends(data) {
+            const todayVsYesterday = ((data[6] - data[5]) / data[5] * 100);
+            const trendElement = document.getElementById('today-trend');
+            trendElement.className = `stat-trend ${todayVsYesterday > 0 ? 'trend-up' : 'trend-down'}`;
+            trendElement.textContent = `${Math.abs(todayVsYesterday).toFixed(1)}% ${todayVsYesterday > 0 ? '↑' : '↓'} vs yesterday`;
+
+            const weeklyTrend = document.getElementById('weekly-trend');
+            const avgChange = (data[6] - (data.reduce((a, b) => a + b, 0) / 7)) / (data.reduce((a, b) => a + b, 0) / 7) * 100;
+            weeklyTrend.className = `stat-trend ${avgChange > 0 ? 'trend-up' : 'trend-down'}`;
+            weeklyTrend.textContent = `${Math.abs(avgChange).toFixed(1)}% ${avgChange > 0 ? '↑' : '↓'} vs average`;
+
+            const efficiencyTrend = document.getElementById('efficiency-trend');
+            const efficiencyChange = ((data[6] - data[5]) / data[5]) * -100;
+            efficiencyTrend.className = `stat-trend ${efficiencyChange > 0 ? 'trend-up' : 'trend-down'}`;
+            efficiencyTrend.textContent = `${Math.abs(efficiencyChange).toFixed(1)}% ${efficiencyChange > 0 ? '↑' : '↓'} efficiency`;
+        }
+
+        function updateProgress(todayUsage) {
+            const progress = (todayUsage / STANDARD_DAILY_USAGE) * 100;
+            const progressBar = document.getElementById('goal-progress');
+            const progressStats = document.getElementById('progress-stats');
+            
+            gsap.to(progressBar, {
+                width: `${Math.min(100, progress)}%`,
+                duration: 1.5,
+                ease: "power2.out"
+            });
+
+            progressStats.textContent = `${todayUsage.toFixed(1)}/${STANDARD_DAILY_USAGE}L`;
+        }
+
+        function checkAlerts(data) {
+            const todayUsage = data[6];
+            const alerts = [];
+
+            if (todayUsage > STANDARD_DAILY_USAGE * 1.1) {
+                alerts.push({
+                    title: 'High Usage Alert',
+                    message: 'Current usage is above normal levels. Consider reducing consumption.',
+                    type: 'warning'
+                });
+            }
+
+            if (todayUsage - data[5] > STANDARD_DAILY_USAGE * 0.2) {
+                alerts.push({
+                    title: 'Sudden Usage Spike',
+                    message: 'Unusual increase in water usage detected. Check for leaks.',
+                    type: 'error'
+                });
+            }
+
+            if (alerts.length > 0) {
+                showAlert(alerts[0]);
+            }
+        }
+
+        function showAlert(alertData) {
+            const alert = document.getElementById('usage-alert');
+            alert.querySelector('.alert-title').textContent = alertData.title;
+            alert.querySelector('.alert-message').textContent = alertData.message;
+            alert.style.borderLeftColor = alertData.type === 'warning' ? 'var(--warning)' : 'var(--error)';
+            
+            alert.classList.add('show');
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+
+        function updateRecommendations(efficiency) {
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+
+            const sortedRecommendations = [...RECOMMENDATIONS_DATA].sort(() => Math.random() - 0.5);
+            const relevantRecommendations = sortedRecommendations.slice(0, 3);
+
+            relevantRecommendations.forEach(rec => {
+                const recElement = document.createElement('div');
+                recElement.className = 'recommendation-item';
+                recElement.innerHTML = `
+                    <div class="recommendation-icon">${rec.icon}</div>
+                    <div class="recommendation-content">
+                        <div class="recommendation-title">${rec.title}</div>
+                        <div class="recommendation-text">${rec.text}</div>
+                    </div>
+                `;
+                recommendationsList.appendChild(recElement);
+            });
+
+            gsap.from('.recommendation-item', {
+                x: -50,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        }
+
+        // Initialize dashboard with animations
+        window.addEventListener('load', () => {
+            initializeChart();
+            
+            // Initial animations
+            gsap.from('.dashboard', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+
+            gsap.from('.stat-card', {
+                y: 30,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+
+            // Simulate real-time data updates
+            const simulateData = () => {
+                const baseUsage = STANDARD_DAILY_USAGE;
+                const randomVariation = () => (Math.random() - 0.5) * 20;
+                return Array(7).fill(0).map(() => Math.max(0, baseUsage + randomVariation()));
+            };
+
+            // Initial data update
+            setTimeout(() => {
+                const initialData = simulateData();
+                updateDashboard(initialData);
+
+                // Start periodic updates
+                setInterval(() => {
+                    const newData = simulateData();
+                    updateDashboard(newData);
+                }, 5000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

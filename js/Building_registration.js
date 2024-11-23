@@ -114,6 +114,7 @@
                     // Here you would typically send the formData to your server
                     console.log('Form submitted:', formData);
                     alert('Form submitted successfully!');
+                    window.location.href = "./Dashboard.html"
                 }
                 return;
             }
